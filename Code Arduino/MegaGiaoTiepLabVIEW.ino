@@ -17,6 +17,8 @@ DHT dht(DHT11_PIN, DHT_TYPE);
 
 LinxArduinoMega2560* LinxDevice;
 
+
+
 //cua cuon + dan phoi
 const byte RxCuaCuon = 14;
 const byte TxCuaCuon = 15;
@@ -28,12 +30,13 @@ const byte RxcanhBaoMua = 18;
 const byte RxCuaNgoai = 13;
 const byte TxCuaNgoai = 12;
 // =========================================
+const byte coi = 3;
 const byte bedroomLightPin = 8;
 const byte livingRoomLightPin = 9;
 const byte kitchenLightPin = 10   ;
 // ========================================
 const byte fanKitchen = 2;
-int DHT11_DS18B20_RFID();
+int DHT11_RFID();
 void setup() {
   pinMode(RxcanhBaoMua, INPUT);
   pinMode(TxCuaCuon, OUTPUT);
@@ -43,7 +46,6 @@ void setup() {
   pinMode(fanKitchen, OUTPUT);
   pinMode(TxCuaNgoai, OUTPUT);
   pinMode(RxCuaNgoai, INPUT);
-  //pinMode(10, OUTPUT);
   pinMode(bedroomLightPin, OUTPUT);
   pinMode(livingRoomLightPin, OUTPUT);
   pinMode(kitchenLightPin, OUTPUT);
@@ -61,25 +63,27 @@ void loop() {
   //Your Code Here, But It will Slow Down The Connection With LabVIEW
 }
 
-int DHT11_DS18B20_RFID(unsigned char numInputBytes, unsigned char* input, unsigned char* numResponseBytes, unsigned char* response) {
+//Custom Command LINX - LabVIEW
+
+int DHT11_RFID(unsigned char numInputBytes, unsigned char* input, unsigned char* numResponseBytes, unsigned char* response) {
  
   if (input[1] == 1) {
-    tone(3, 1000, 1000);
+    tone(coi, 1000, 1000);
   } else {
-    noTone(3);
+    noTone(coi);
   }
-  digitalWrite(fanKitchen,input[0]);
+  digitalWrite(fanKitchen, input[0]);
  
 
-  /////////////////////
-  digitalWrite(TxCuaNgoai,input[2]);
-  digitalWrite(bedroomLightPin, input[3]);
+  //Gui tin hieu dieu khien tu labVIEW den cac hẹ thong
+  digitalWrite(TxCuaNgoai, input[2]);     
+  digitalWrite(bedroomLightPin, input[3]); 
   digitalWrite(livingRoomLightPin, input[4]);
   digitalWrite(kitchenLightPin, input[5]);
   digitalWrite(TxCuaCuon, input[6]);
   digitalWrite(TxDanPhoi, input[7]);
 
-  /////////////////////
+  //gui tin hieu doc duoc len labVIEW
   float hum = dht.readHumidity();
   float tem = dht.readTemperature();
   byte roundHum = round(hum);
